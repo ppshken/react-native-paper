@@ -12,6 +12,28 @@ export default function LoginScreen() {
   const router = useRouter();
   const [require, setRequire] = useState(false);
 
+  const users = [
+    {
+      id: 1,
+      username: 'admin',
+      password: '1234',
+      name: 'John Doe',
+      email: 'kensaohin@gmail.com',
+      phone: '0123456789',
+      image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+    },
+    {
+      id: 2,
+      username: 'kenzanaqq',
+      password: '654312',
+      name: 'Pongpat Saohin',
+      email: 'kensaohin@gmail.com',
+      phone: '0123456789',
+      image: 'https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
+    }
+  ]
+
+  // ฟังก์ชั่นเช็ค session ถ้ามี session ให้ redirect ไปที่หน้า home
   useEffect(() => {
     const checkSession = async () => {
       const session = await AsyncStorage.getItem('userSession');
@@ -25,12 +47,16 @@ export default function LoginScreen() {
   // ฟังก์ชั่น Login 
   const handleLogin = async () => {
     setRequire(true);
-    if (!username.trim() || !password.trim()) { // ตรวจสอบว่ามีการกรอกข้อมูลหรือไม่
-      return; //
+    if (!username.trim() || !password.trim()) {
+      return;
     }
-    if (username === 'admin' && password === '1234') {
+    // ตรวจสอบ username และ password จาก users
+    const foundUser = users.find(
+      (u) => u.username === username && u.password === password
+    );
+    if (foundUser) {
       setLoading(true);
-      await AsyncStorage.setItem('userSession', JSON.stringify({ username }));     
+      await AsyncStorage.setItem('userSession', JSON.stringify({ user_id: foundUser.id }));
       setTimeout(() => {
         setLoading(false);
         router.replace('/(tabs)/home');
@@ -62,7 +88,7 @@ export default function LoginScreen() {
           placeholderTextColor="#aaa"
         />
         {require && !username.trim() && (
-          <Text style={{color: 'red', alignSelf: 'flex-start', marginLeft: 4, marginBottom: 15}}>กรุณากรอก Username!</Text>
+          <Text style={{ color: 'red', alignSelf: 'flex-start', marginLeft: 4, marginBottom: 15, fontFamily: 'Prompt-Regular' }}>กรุณากรอก Username!</Text>
         )}
 
         <TextInput
@@ -74,7 +100,7 @@ export default function LoginScreen() {
           placeholderTextColor="#aaa"
         />
         {require && !password.trim() && (
-          <Text style={{color: 'red', alignSelf: 'flex-start', marginLeft: 4, marginBottom: 15}}>กรุณากรอก Password!</Text>
+          <Text style={{ color: 'red', alignSelf: 'flex-start', marginLeft: 4, marginBottom: 15, fontFamily: 'Prompt-Regular' }}>กรุณากรอก Password!</Text>
         )}
         <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.85}>
           <Text style={styles.buttonText}>เข้าสู่ระบบ</Text>

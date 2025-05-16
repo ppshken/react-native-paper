@@ -1,26 +1,61 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import { checkSession } from '@/hooks/auth';
+import { ActivityIndicator, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
   const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [image, setImage] = useState('');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const users = [
+    {
+      id: 1,
+      username: 'admin',
+      password: '1234',
+      name: 'John Doe',
+      email: 'kensaohin@gmail.com',
+      phone: '0123456789',
+      image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+    },
+    {
+      id: 2,
+      username: 'kenzanaqq',
+      password: '654312',
+      name: 'Pongpat Saohin',
+      email: 'kensaohin@gmail.com',
+      phone: '0123456789',
+      image: 'https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D'
+    }
+  ]
 
   // ดึงข้อมูลผู้ใช้จาก session
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await checkSession();
-      if (user) {
-        setUsername(user.username);
+      const session = await AsyncStorage.getItem('userSession');
+      if (session) {
+        const { user_id } = JSON.parse(session);
+        const foundUser = users.find(u => u.id === user_id);
+        if (foundUser) {
+          setUsername(foundUser.username);
+          setPassword(foundUser.password); // ตัวอย่าง: เปลี่ยนเป็น email หรือข้อมูลอื่นที่ต้องการแสดง
+          setEmail(foundUser.email);
+          setPhone(foundUser.phone);
+          setName(foundUser.name);
+          setImage(foundUser.image); 
+        }
       }
     };
     fetchUser();
   }, []);
 
+  // ออกจากระบบ
   const handleLogout = async () => {
     setLoading(true);
     await AsyncStorage.removeItem('userSession');
@@ -41,11 +76,14 @@ export default function ProfileScreen() {
       </Modal>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+          source={{ uri: image }}
           style={styles.avatar}
         />
         <Text style={styles.name}>{username}</Text>
-        <Text style={styles.email}>john.doe@email.com</Text>
+        <Text style={styles.email}>{password}</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.email}>{email}</Text>
+        <Text style={styles.email}>{phone}</Text>
       </View>
       <View style={styles.section}>
         <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => router.push('/profile-form')}>
@@ -86,7 +124,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    borderWidth: 4,
     borderColor: '#fff',
     marginBottom: 16,
   },
