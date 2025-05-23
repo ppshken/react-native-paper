@@ -97,7 +97,7 @@ export default function HomeScreen() {
         {/* Section: For this summer */}
         <View style={styles.sectionRow}>
           <Text style={styles.sectionTitle}>For this summer</Text>
-          <TouchableOpacity><Text style={styles.seeMore}>See morerrrrr</Text></TouchableOpacity>
+          <TouchableOpacity><Text style={styles.seeMore}>See more</Text></TouchableOpacity>
         </View>
         <View style={styles.cardRow}>
           <View style={styles.card}>

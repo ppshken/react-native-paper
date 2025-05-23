@@ -86,7 +86,7 @@ export default function ProfileScreen() {
         <Text style={styles.email}>{phone}</Text>
       </View>
       <View style={styles.section}>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => router.push('/profile-form')}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => router.push('/form/user')}>
           <Ionicons name="person-outline" size={24} color="#0a7ea4" style={styles.icon} />
           <Text style={styles.rowText}>ข้อมูลส่วนตัว</Text>
         </TouchableOpacity>
@@ -101,6 +101,9 @@ export default function ProfileScreen() {
         <TouchableOpacity style={[styles.row, styles.logout]} activeOpacity={0.8} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="#e74c3c" style={styles.icon} />
           <Text style={[styles.rowText, { color: '#e74c3c' }]}>ออกจากระบบ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => router.push('/form/role')}>
+          <Text style={styles.rowText}>Role</Text>
         </TouchableOpacity>
       </View>
     </View>

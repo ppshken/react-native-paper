@@ -39,6 +39,7 @@ export default function LoginScreen() {
       const session = await AsyncStorage.getItem('userSession');
       if (session) {
         router.replace('/(tabs)/home');
+        //router.replace('/form/role');
       }
     };
     checkSession();
@@ -72,7 +73,9 @@ export default function LoginScreen() {
     <LinearGradient colors={['#0a7ea4', '#67c6e3']} style={styles.gradient}>
       <Modal visible={loading} transparent animationType="fade">
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#0a7ea4" />
+          <ActivityIndicator
+            animating={true} size="large"
+          />
           <Text style={styles.loaderText}>กำลังเข้าสู่ระบบ...</Text>
         </View>
       </Modal>

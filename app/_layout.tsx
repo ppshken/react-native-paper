@@ -11,6 +11,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     'Prompt-Regular': require('../assets/fonts/Prompt-Regular.ttf'),
+    'Prompt-Bold': require('../assets/fonts/Prompt-Bold.ttf'),
   });
 
   if (!loaded) return null;
@@ -20,9 +21,13 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="form/user/index" />
+        <Stack.Screen name="form/role/index" options={{ title: 'ระดับผู้ใช้งาน',
+          headerTitleStyle: { fontFamily: 'Prompt-Regular' }
+        }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style={colorScheme === 'dark' ? 'dark' : 'light'} />
     </ThemeProvider>
   );
 }
