@@ -11,7 +11,6 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     'Prompt-Regular': require('../assets/fonts/Prompt-Regular.ttf'),
-    'Prompt-Bold': require('../assets/fonts/Prompt-Bold.ttf'),
   });
 
   if (!loaded) return null;
